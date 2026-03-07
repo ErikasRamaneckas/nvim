@@ -1,1 +1,1 @@
-print('first')
+require("config.lazy")
