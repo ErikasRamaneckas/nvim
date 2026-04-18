@@ -1,7 +1,6 @@
 local parsers = {
     "lua",
     "php",
-    "php_only",
     "blade",
     "html",
     "css",
@@ -11,18 +10,16 @@ local parsers = {
 return {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
-    branch = "main",
     build = ":TSUpdate",
-    opts = {},
-    config = function(_, opts)
-        local nts = require("nvim-treesitter")
+    config = function()
+        require("nvim-treesitter").install({ "lua", "php", "blade", "html", "css", "javascript" })
+
         vim.api.nvim_create_autocmd("FileType", {
             pattern = parsers,
             callback = function()
                 vim.treesitter.start()
+                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end,
         })
-        nts.setup(opts)
-        nts.install(parsers)
     end,
 }
